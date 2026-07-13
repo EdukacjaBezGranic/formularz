@@ -1,14 +1,10 @@
-# Formularz rekrutacyjny – wersja 8.0
+# Formularz rekrutacyjny v8.3
 
-Gotowa paczka do publikacji na GitHub Pages.
+Wersja z dopracowaną responsywnością na telefonach.
 
-- poprawiony, responsywny pasek logotypów bez przycinania,
-- oficjalne logo WUP,
-- nowoczesny interfejs formularza,
-- lokalne generowanie PDF bez wysyłania danych na serwer.
-
-Po wgraniu plików do repozytorium włącz GitHub Pages dla gałęzi `main` i katalogu `/root`.
-
-
-## Wersja 8.1
-Po pobraniu PDF formularz automatycznie usuwa wpisane dane, czyści pamięć strony i wyświetla ekran potwierdzenia. Dane nie są przesyłane na serwer.
+- układ jednokolumnowy na telefonie,
+- większe pola i przyciski dotykowe,
+- pasek działań dostosowany do dolnej krawędzi ekranu,
+- poprawione logotypy, nagłówek, karty i okna dialogowe,
+- obsługa safe-area na iPhone,
+- generator PDF działa lokalnie i nie wysyła danych.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Formularz rekrutacyjny - generator PDF</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=8.3">
 </head>
 <body>
   <header class="site-header">
@@ -157,6 +157,20 @@
   </dialog>
 
 
+
+  <dialog id="confirmDialog" class="confirm-dialog" aria-labelledby="confirmTitle">
+    <div class="confirm-card">
+      <div class="confirm-icon" aria-hidden="true">!</div>
+      <h2 id="confirmTitle">Sprawdź poprawność danych</h2>
+      <p>Przed utworzeniem dokumentu PDF upewnij się, że wszystkie dane zostały wpisane poprawnie.</p>
+      <div class="confirm-note">Po wygenerowaniu dokumentu dane w pliku PDF nie będą już edytowane przez formularz.</div>
+      <div class="confirm-actions">
+        <button type="button" class="secondary" id="cancelGeneration">Sprawdź jeszcze raz</button>
+        <button type="button" class="primary" id="confirmGeneration">Generuj PDF</button>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="completionDialog" class="completion-dialog" aria-labelledby="completionTitle">
     <div class="completion-card">
       <div class="completion-mark" aria-hidden="true">✓</div>
@@ -169,6 +183,6 @@
   </dialog>
 
   <script src="assets/pdf-lib.min.js"></script>
-  <script src="app-v8-1.js?v=1"></script>
+  <script src="app-v8-2.js?v=8.3"></script>
 </body>
 </html>

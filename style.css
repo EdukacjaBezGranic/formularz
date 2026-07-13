@@ -170,3 +170,153 @@ fieldset{border:0;padding:0;margin:22px 0 0}legend{font-weight:850;margin-bottom
   .completion-card h2{font-size:24px}
   .completion-close{width:100%}
 }
+
+/* Wersja 8.2 – potwierdzenie poprawności danych przed utworzeniem PDF */
+.confirm-dialog{
+  width:min(590px,calc(100vw - 28px));
+  border:0;
+  padding:0;
+  border-radius:24px;
+  background:transparent;
+  box-shadow:0 28px 90px rgba(4,25,55,.34);
+}
+.confirm-dialog::backdrop{
+  background:rgba(6,25,48,.76);
+  backdrop-filter:blur(5px);
+}
+.confirm-card{
+  background:#fff;
+  color:var(--ink);
+  padding:36px 34px 30px;
+  text-align:center;
+  border-radius:24px;
+  border-top:7px solid #f0b429;
+}
+.confirm-icon{
+  width:68px;height:68px;margin:0 auto 18px;
+  display:grid;place-items:center;border-radius:50%;
+  background:#fff6d8;color:#8a5a00;font-size:36px;font-weight:900;
+  box-shadow:inset 0 0 0 1px #f1d57a;
+}
+.confirm-card h2{margin:0 0 12px;font-size:28px;line-height:1.15;letter-spacing:-.02em}
+.confirm-card p{margin:0 auto;color:var(--muted);line-height:1.58;max-width:470px}
+.confirm-note{margin:20px 0 24px;padding:14px 16px;border-radius:14px;background:#f5f8fc;border:1px solid #dce5ef;color:#31465f;font-weight:700;line-height:1.45}
+.confirm-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.confirm-actions button{min-width:190px}
+@media(max-width:600px){
+  .confirm-card{padding:30px 20px 24px}
+  .confirm-card h2{font-size:24px}
+  .confirm-actions{display:grid;grid-template-columns:1fr}
+  .confirm-actions button{width:100%;min-width:0}
+}
+
+/* Wersja 8.3 – dopracowana responsywność na telefonach */
+@media (max-width: 768px){
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:14px}
+  body{background:#eef4fa;overflow-x:hidden}
+  .brand-wrap{padding:10px 12px}
+  .funding-logos{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
+  .funding-logos img{height:52px;max-width:100%;object-fit:contain}
+
+  .hero{padding:24px 14px 30px}
+  .hero:before,.hero:after{opacity:.55}
+  .hero-inner{display:block;max-width:620px}
+  .hero-copy .institution-row{margin-bottom:18px}
+  .wup-brand-box{width:100%;max-width:390px;padding:8px 12px;border-radius:14px}
+  .wup-logo-wide{height:62px;width:100%;max-width:100%;object-position:left center}
+  .hero h1{font-size:clamp(29px,8.6vw,39px);line-height:1.08;margin-bottom:14px;overflow-wrap:anywhere}
+  .hero-lead{font-size:16px;line-height:1.55}
+  .project-chip{display:flex;width:100%;font-size:13px;line-height:1.45;margin-top:18px;padding:11px 12px;white-space:normal}
+  .hero-panel{margin-top:20px;padding:18px;border-radius:17px;display:grid;grid-template-columns:42px 1fr;column-gap:12px;align-items:start}
+  .hero-panel strong{margin:0 0 5px;font-size:17px}
+  .hero-panel p{grid-column:2;font-size:13.5px;line-height:1.5}
+  .privacy-icon{grid-row:1/3}
+
+  .layout{display:flex;flex-direction:column;margin:0 auto 36px;padding:18px 10px 0;gap:0;max-width:680px}
+  #recruitmentForm{order:1;width:100%;min-width:0}
+  .sidebar{order:2;position:static;display:grid;grid-template-columns:1fr;gap:12px;width:100%;margin-top:18px}
+  .side-card{padding:18px;border-radius:17px;box-shadow:0 10px 28px rgba(12,42,80,.08)}
+  .steps-list{gap:12px}
+
+  .card{padding:20px 16px 22px;margin-bottom:14px;border-radius:18px;box-shadow:0 10px 28px rgba(12,42,80,.08)}
+  .card:before{width:4px}
+  .section-title{gap:11px;margin-bottom:20px}
+  .section-title>span{width:36px;height:36px;border-radius:11px;font-size:15px}
+  .section-title h2{font-size:21px;line-height:1.18}
+  .section-title p{font-size:13.5px;line-height:1.45}
+
+  .grid,.grid.two{grid-template-columns:1fr;gap:14px}
+  .wide{grid-column:auto}
+  label{gap:7px;font-size:14px;line-height:1.35}
+  input,select,textarea{font-size:16px;min-height:50px;padding:13px 12px;border-radius:11px}
+  textarea{min-height:112px;resize:vertical}
+  fieldset{margin-top:20px;min-width:0}
+  legend{font-size:15px;line-height:1.35;margin-bottom:10px}
+
+  .choice-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .choice-row label,.choices label,.confirm{min-height:48px;padding:12px;align-items:flex-start;line-height:1.35}
+  .choices{gap:8px}
+  .choices label{width:100%}
+  input[type=radio],input[type=checkbox]{width:21px;height:21px;margin-top:0}
+  .status-list fieldset{padding:14px 0}
+  .status-list legend{padding-right:2px}
+
+  .support-grid{gap:11px;margin-top:16px}
+  .support-row{grid-template-columns:1fr;gap:12px;padding:14px;border-radius:13px}
+  .confirm{margin-top:18px}
+
+  .actions{position:sticky;bottom:0;display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px -2px 0;padding:10px;padding-bottom:max(10px,env(safe-area-inset-bottom));border-radius:16px;background:rgba(247,251,255,.98);box-shadow:0 -8px 28px rgba(12,42,80,.14);z-index:20}
+  .actions button{width:100%;min-width:0;min-height:49px;padding:12px 10px;font-size:14px}
+  .actions .primary{grid-column:1/-1;grid-row:1;min-width:0}
+  .actions .secondary{grid-column:1;grid-row:2}
+  .actions .preview{grid-column:2;grid-row:2}
+  #message{font-size:14px;margin:12px 4px}
+
+  .preview-dialog{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border-radius:0}
+  .preview-head{min-height:58px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top))}
+  .preview-head strong{font-size:15px;line-height:1.25;padding-right:8px}
+  .preview-head button{min-width:45px;min-height:45px}
+  .preview-foot{padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+  .preview-foot button{width:100%;min-width:0}
+  .preview-dialog iframe{height:calc(100dvh - 126px)}
+
+  .confirm-dialog,.completion-dialog{width:calc(100vw - 20px);max-height:calc(100dvh - 20px);margin:auto}
+  .confirm-card,.completion-card{padding:26px 18px 20px;border-radius:20px;max-height:calc(100dvh - 20px);overflow:auto}
+  .confirm-card h2,.completion-card h2{font-size:23px}
+  .confirm-icon,.completion-mark{width:60px;height:60px;font-size:32px;margin-bottom:15px}
+  .confirm-note,.completion-security{padding:12px 13px;margin-top:16px!important}
+  .confirm-actions{display:grid;grid-template-columns:1fr;gap:9px}
+  .confirm-actions button,.completion-close{width:100%;min-width:0;min-height:49px}
+}
+
+@media (max-width: 420px){
+  .funding-logos{gap:5px 8px}
+  .funding-logos img{height:44px}
+  .hero{padding-left:12px;padding-right:12px}
+  .hero h1{font-size:30px}
+  .hero-panel{grid-template-columns:38px 1fr;padding:16px 14px}
+  .privacy-icon{width:38px;height:38px;border-radius:12px;font-size:21px}
+  .layout{padding-left:7px;padding-right:7px}
+  .card{padding:18px 14px 20px;border-radius:16px}
+  .section-title h2{font-size:20px}
+  .choice-row{grid-template-columns:1fr}
+  .actions{margin-left:-1px;margin-right:-1px;padding:8px;gap:8px}
+  .actions button{font-size:13.5px}
+}
+
+@media (max-width: 350px){
+  .funding-logos{grid-template-columns:1fr}
+  .funding-logos img{height:46px}
+  .hero h1{font-size:27px}
+  .project-chip{font-size:12.5px}
+  .actions{grid-template-columns:1fr}
+  .actions .primary,.actions .secondary,.actions .preview{grid-column:1;grid-row:auto}
+}
+
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 950px){
+  .hero{padding-top:18px;padding-bottom:22px}
+  .hero-panel{display:none}
+  .wup-logo-wide{height:52px}
+  .hero h1{font-size:30px}
+  .project-chip{margin-top:12px}
+}
