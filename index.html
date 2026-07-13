@@ -133,7 +133,6 @@
 
     <aside class="sidebar">
       <div class="side-card project-card">
-        <img src="assets/logo-kompetencje.png" alt="Kompetencje Plus" class="project-logo">
         <h3>O projekcie</h3>
         <p>Formularz dotyczy udziału w projekcie wspierającym rozwój kompetencji pracowników Publicznych Służb Zatrudnienia.</p>
         <div class="project-meta"><span>Nr projektu</span><strong>FESL.05.07-IP.02-056A/23</strong></div>
@@ -157,7 +156,19 @@
     <div class="preview-foot"><button type="button" class="primary" id="downloadPreview">Pobierz ten PDF</button></div>
   </dialog>
 
+
+  <dialog id="completionDialog" class="completion-dialog" aria-labelledby="completionTitle">
+    <div class="completion-card">
+      <div class="completion-mark" aria-hidden="true">✓</div>
+      <h2 id="completionTitle">Formularz został przygotowany</h2>
+      <p>Dokument PDF został zapisany na Twoim urządzeniu.</p>
+      <p class="completion-security">Dla bezpieczeństwa wszystkie wprowadzone dane zostały usunięte z pamięci formularza.</p>
+      <p class="completion-thanks">Dziękujemy za skorzystanie z formularza.</p>
+      <button type="button" class="primary completion-close" id="closeCompletion">Zamknij</button>
+    </div>
+  </dialog>
+
   <script src="assets/pdf-lib.min.js"></script>
-  <script src="app-v5.js?v=7"></script>
+  <script src="app-v8-1.js?v=1"></script>
 </body>
 </html>
