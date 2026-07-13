@@ -22,3 +22,7 @@ Do testowania lokalnego użyj prostego serwera HTTP, np. `python -m http.server 
 ## Kalibracja 3.0
 
 Ta wersja korzysta z czystego, nieinteraktywnego wzoru PDF. Usunięto dodatkowe puste kwadraty, ustawiono cyfry PESEL i daty urodzenia według rzeczywistych granic komórek oraz poprawiono położenie miejscowości i daty na stronie 5. Dane są przetwarzane wyłącznie lokalnie w przeglądarce.
+
+
+## Ważne przy aktualizacji
+Wersja 4.0 używa nowych nazw `app-v4.js` i `formularz-wzor-v4.pdf`, aby GitHub Pages i telefon nie otwierały starej wersji z pamięci podręcznej. Po wgraniu usuń z repozytorium stare pliki `app.js` i `assets/formularz-wzor.pdf`.
