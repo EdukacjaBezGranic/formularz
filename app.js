@@ -28,8 +28,8 @@
     data_rozp_zatr:[1,291.65095,163.10114,544.29507,206.27497], data_zakonczenia_zatr:[2,291.65095,696.1781,544.29507,765.1363],
     stanowisko_pracy:[2,291.65095,666.7959,544.29507,694.37918], opis_szczegolnych_potrzeb:[2,70.81236,163.10114,482.48426,214.66992],
     obszar_wsparcia_1:[3,94.81656,344.1914,381.66667,371.17506], obszar_wsparcia_2:[3,94.81656,310.01216,381.66667,336.99577],
-    obszar_wsparcia_3:[3,94.81656,275.23323,381.66667,302.21687], imie_nazwisko_oswiadczenie:[4,70.81236,696.7777,481.88417,714.1672],
-    miejscowosc_data:[5,90.61582,456.32347,221.43868,475.5118]
+    obszar_wsparcia_3:[3,94.81656,275.23323,381.66667,302.21687], imie_nazwisko_oswiadczenie:[4,70.81236,700.0,481.88417,715.0],
+    miejscowosc_data:[5,104.5,335.0,226.0,350.0]
   };
 
   const checks = {
@@ -118,7 +118,7 @@
       const maxLines = Math.max(1, Math.floor(availableHeight / lineHeight));
       const shown = lines.slice(0, maxLines);
       const totalH = shown.length * lineHeight;
-      const startY = multiline ? padY + lineHeight/2 : canvas.height/2 + (options.offsetY ?? 0) * scale;
+      const startY = multiline ? (canvas.height - totalH)/2 + lineHeight/2 + (options.offsetY ?? 0) * scale : canvas.height/2 + (options.offsetY ?? 0) * scale;
       shown.forEach((line, i) => {
         const w = ctx.measureText(line).width;
         const x = center ? (canvas.width - w)/2 : padX;
@@ -147,10 +147,27 @@
     });
   }
 
+
+  async function drawDigitsPrecisely(pdfDoc, page, value, xCenters, yCenter, fontSize = 9.2) {
+    if (!value) return;
+    const clean = String(value).replace(/\D/g, '');
+    const font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
+    clean.slice(0, xCenters.length).split('').forEach((digit, i) => {
+      const width = font.widthOfTextAtSize(digit, fontSize);
+      page.drawText(digit, {
+        x: xCenters[i] - width / 2,
+        y: yCenter - fontSize * 0.34,
+        size: fontSize,
+        font,
+        color: rgb(0,0,0)
+      });
+    });
+  }
+
   function drawX(page, rect) {
     const [, x1, y1, x2, y2] = rect;
     const cx=(x1+x2)/2, cy=(y1+y2)/2;
-    const size=Math.min(x2-x1,y2-y1)*0.30;
+    const size=Math.min(x2-x1,y2-y1)*0.27;
     page.drawLine({start:{x:cx-size,y:cy-size},end:{x:cx+size,y:cy+size},thickness:1.25,color:rgb(0,0,0)});
     page.drawLine({start:{x:cx-size,y:cy+size},end:{x:cx+size,y:cy-size},thickness:1.25,color:rgb(0,0,0)});
   }
@@ -170,8 +187,7 @@
     const response = await fetch('assets/formularz-wzor.pdf', {cache:'no-store'});
     if (!response.ok) throw new Error('Nie udało się wczytać wzoru PDF.');
     const pdfDoc = await PDFDocument.load(await response.arrayBuffer());
-    // Usuwamy puste pola formularza z wzoru, aby pod wydrukiem została czysta strona.
-    try { pdfDoc.getForm().flatten(); } catch (_) {}
+    // Wzór jest czystym, nieinteraktywnym PDF-em. Nie ma w nim widżetów ani pustych pól AcroForm.
     const pages = pdfDoc.getPages();
 
     const values = {
@@ -186,16 +202,21 @@
       miejscowosc_data:`${get('miejscowosc_podpisu')}, ${formatDatePL(get('data_podpisu'))}`
     };
 
-    const multiline = new Set(['typ_umowy','data_rozp_zatr','data_zakonczenia_zatr','stanowisko_pracy','opis_szczegolnych_potrzeb','obszar_wsparcia_1','obszar_wsparcia_2','obszar_wsparcia_3']);
+    const multiline = new Set(['typ_umowy','data_rozp_zatr','data_zakonczenia_zatr','stanowisko_pracy','opis_szczegolnych_potrzeb']);
     for (const [name, value] of Object.entries(values)) {
       const rect=fields[name];
       if (rect && value) await drawText(pdfDoc,pages[rect[0]-1],rect,value,{multiline:multiline.has(name),fontPt:name.startsWith('obszar_')?8.0:undefined});
     }
 
-    // PESEL i data urodzenia: znak w osobnej kratce, zgodnie ze wzorem.
-    await drawCharacters(pdfDoc,pages[0],fields.pesel,get('pesel'),'ddddddddddd'.split(''));
+    // PESEL: każda cyfra jest centrowana według rzeczywistych granic kratek wzoru.
+    const peselCenters = [304.25,329.25,352.75,376.75,400.25,423.25,445.75,468.0,490.0,512.25,534.5];
+    await drawDigitsPrecisely(pdfDoc, pages[0], get('pesel'), peselCenters, 505.2, 8.9);
+
+    // Data urodzenia: RRRR-MM-DD. Myślniki są już wydrukowane we wzorze,
+    // dlatego nanosimy wyłącznie osiem cyfr do właściwych komórek.
     const iso=formatDateISO(get('data_urodzenia')).replace(/-/g,''); // RRRRMMDD
-    await drawCharacters(pdfDoc,pages[0],fields.data_urodzenia,iso,'dddd-dd-dd'.split(''));
+    const birthDateCenters = [300.5,318.0,333.25,348.5,378.5,393.5,423.5,438.75];
+    await drawDigitsPrecisely(pdfDoc, pages[0], iso, birthDateCenters, 482.35, 8.9);
 
     const marks=[
       `plec_${selected('plec')}`, `wykszt_${selected('wyksztalcenie')}`,
