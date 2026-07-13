@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formularz rekrutacyjny - generator PDF</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">WOJEWÓDZKI URZĄD PRACY W KATOWICACH</div>
+      <h1>Formularz rekrutacyjny uczestnika projektu</h1>
+      <p>Wypełnij dane, a następnie wygeneruj gotowy dokument PDF. Dane pozostają wyłącznie na tym urządzeniu.</p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <form id="recruitmentForm" novalidate>
+      <section class="card">
+        <div class="section-title"><span>1</span><div><h2>Dane osobowe</h2><p>Pola oznaczone gwiazdką są wymagane.</p></div></div>
+        <div class="grid two">
+          <label>Imię *<input name="imie" autocomplete="given-name" required></label>
+          <label>Nazwisko *<input name="nazwisko" autocomplete="family-name" required></label>
+          <label>Obywatelstwo *<input name="obywatelstwo" required value="polskie"></label>
+          <label>Wiek *<input name="wiek" type="number" min="16" max="100" required></label>
+          <label>PESEL *<input name="pesel" inputmode="numeric" maxlength="11" pattern="[0-9]{11}" required></label>
+          <label>Data urodzenia *<input name="data_urodzenia" type="date" required></label>
+        </div>
+        <fieldset><legend>Płeć *</legend><div class="choice-row"><label><input type="radio" name="plec" value="kobieta" required> Kobieta</label><label><input type="radio" name="plec" value="mezczyzna"> Mężczyzna</label></div></fieldset>
+        <fieldset><legend>Wykształcenie *</legend><div class="choices">
+          <label><input type="radio" name="wyksztalcenie" value="podstawowe" required> Podstawowe (ISCED 1)</label>
+          <label><input type="radio" name="wyksztalcenie" value="gimnazjalne"> Gimnazjalne (ISCED 2)</label>
+          <label><input type="radio" name="wyksztalcenie" value="ponadgimnazjalne"> Ponadgimnazjalne (ISCED 3)</label>
+          <label><input type="radio" name="wyksztalcenie" value="policealne"> Policealne (ISCED 4)</label>
+          <label><input type="radio" name="wyksztalcenie" value="wyzsze"> Wyższe (ISCED 5-8)</label>
+        </div></fieldset>
+      </section>
+
+      <section class="card">
+        <div class="section-title"><span>2</span><div><h2>Adres zamieszkania</h2></div></div>
+        <div class="grid two">
+          <label>Województwo *<input name="wojewodztwo" required value="śląskie"></label>
+          <label>Powiat *<input name="powiat" required></label>
+          <label>Gmina *<input name="gmina" required></label>
+          <label>Miejscowość *<input name="miejscowosc" autocomplete="address-level2" required></label>
+          <label>Kod pocztowy *<input name="kod_pocztowy" autocomplete="postal-code" pattern="[0-9]{2}-[0-9]{3}" placeholder="00-000" required></label>
+          <label>Ulica *<input name="ulica" autocomplete="street-address" required></label>
+          <label>Nr domu *<input name="nr_domu" required></label>
+          <label>Nr lokalu<input name="nr_lokalu"></label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title"><span>3</span><div><h2>Dane kontaktowe i zatrudnienie</h2></div></div>
+        <div class="grid two">
+          <label>Telefon *<input name="telefon" type="tel" autocomplete="tel" required></label>
+          <label>Adres e-mail *<input name="email" type="email" autocomplete="email" required></label>
+          <label class="wide">Zatrudniony/a w *<input name="zatrudniony_w" required></label>
+          <label>Typ umowy *<input name="typ_umowy" required></label>
+          <label>Data rozpoczęcia zatrudnienia *<input name="data_rozp_zatr" type="date" required></label>
+          <label>Data zakończenia zatrudnienia<input name="data_zakonczenia_zatr" placeholder="np. nadal lub 2027-12-31"></label>
+          <label>Zajmowane stanowisko pracy *<input name="stanowisko_pracy" required></label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title"><span>4</span><div><h2>Status uczestnika</h2><p>W każdym wierszu wybierz TAK albo NIE.</p></div></div>
+        <div class="status-list">
+          <fieldset><legend>Osoba z niepełnosprawnością / niepełnosprawnościami *</legend><div class="choice-row"><label><input type="radio" name="niepelnosprawnosc" value="tak" required> TAK</label><label><input type="radio" name="niepelnosprawnosc" value="nie"> NIE</label></div></fieldset>
+          <fieldset><legend>Osoba z krajów trzecich *</legend><div class="choice-row"><label><input type="radio" name="kraje_trzecie" value="tak" required> TAK</label><label><input type="radio" name="kraje_trzecie" value="nie"> NIE</label></div></fieldset>
+          <fieldset><legend>Osoba obcego pochodzenia *</legend><div class="choice-row"><label><input type="radio" name="obce_pochodzenie" value="tak" required> TAK</label><label><input type="radio" name="obce_pochodzenie" value="nie"> NIE</label></div></fieldset>
+          <fieldset><legend>Osoba należąca do mniejszości, w tym społeczności marginalizowanych *</legend><div class="choice-row"><label><input type="radio" name="mniejszosc" value="tak" required> TAK</label><label><input type="radio" name="mniejszosc" value="nie"> NIE</label></div></fieldset>
+          <fieldset><legend>Osoba w kryzysie bezdomności lub wykluczona z dostępu do mieszkań *</legend><div class="choice-row"><label><input type="radio" name="bezdomnosc" value="tak" required> TAK</label><label><input type="radio" name="bezdomnosc" value="nie"> NIE</label></div></fieldset>
+        </div>
+        <fieldset><legend>Szczególne potrzeby wymagające racjonalnych usprawnień *</legend><div class="choice-row"><label><input type="radio" name="szczegolne_potrzeby" value="nie" required> NIE</label><label><input type="radio" name="szczegolne_potrzeby" value="tak"> TAK</label></div></fieldset>
+        <label id="needsDetails" class="hidden">Rodzaj potrzeb i oczekiwane usprawnienia<textarea name="opis_szczegolnych_potrzeb" rows="4"></textarea></label>
+      </section>
+
+      <section class="card">
+        <div class="section-title"><span>5</span><div><h2>Stanowisko i obszary wsparcia</h2></div></div>
+        <fieldset><legend>Szczebel obecnie zajmowanego stanowiska *</legend><div class="choices">
+          <label><input type="radio" name="szczebel" value="kadra_zarzadzajaca" required> Kadra zarządzająca</label>
+          <label><input type="radio" name="szczebel" value="wyzszy_szczebel"> Pracownicy wyższego szczebla</label>
+          <label><input type="radio" name="szczebel" value="sredni_szczebel"> Pracownicy średniego szczebla</label>
+          <label><input type="radio" name="szczebel" value="nizszy_szczebel"> Pracownicy niższego szczebla</label>
+          <label><input type="radio" name="szczebel" value="prace_proste"> Pracownicy wykonujący prace proste</label>
+        </div></fieldset>
+        <div class="support-grid">
+          <div class="support-row"><label>Obszar wsparcia 1 *<input name="obszar_wsparcia_1" required></label><label>Poziom *<select name="obszar_1_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
+          <div class="support-row"><label>Obszar wsparcia 2 *<input name="obszar_wsparcia_2" required></label><label>Poziom *<select name="obszar_2_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
+          <div class="support-row"><label>Obszar wsparcia 3 *<input name="obszar_wsparcia_3" required></label><label>Poziom *<select name="obszar_3_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title"><span>6</span><div><h2>Dane do podpisu</h2><p>Dokument należy podpisać własnoręcznie po wydrukowaniu albo podpisać elektronicznie.</p></div></div>
+        <div class="grid two"><label>Miejscowość *<input name="miejscowosc_podpisu" required></label><label>Data podpisu *<input name="data_podpisu" type="date" required></label></div>
+        <label class="confirm"><input type="checkbox" name="potwierdzenie" required> Potwierdzam, że podane dane są zgodne ze stanem faktycznym i zapoznałem/am się z oświadczeniami w formularzu.</label>
+      </section>
+
+      <div class="actions">
+        <button type="button" class="secondary" id="clearBtn">Wyczyść</button>
+        <button type="submit" class="primary" id="generateBtn"><span>Generuj wypełniony PDF</span></button>
+      </div>
+      <div id="message" role="status" aria-live="polite"></div>
+    </form>
+
+    <aside class="sidebar">
+      <div class="side-card"><h3>Jak to działa?</h3><ol><li>Wypełnij pola.</li><li>Kliknij „Generuj wypełniony PDF”.</li><li>Zapisz i wydrukuj dokument.</li><li>Złóż podpis na ostatniej stronie.</li></ol></div>
+      <div class="side-card privacy"><h3>Prywatność</h3><p>Formularz działa lokalnie w przeglądarce. Dane nie są przesyłane na serwer.</p></div>
+    </aside>
+  </main>
+
+  <script src="assets/pdf-lib.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
