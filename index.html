@@ -7,12 +7,35 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div style="position:fixed;right:10px;bottom:10px;z-index:20;background:#0f4c81;color:#fff;padding:5px 9px;border-radius:10px;font:600 11px Arial">Wersja kalibracji 5.0</div>
-  <header class="hero">
-    <div class="hero-inner">
-      <div class="eyebrow">WOJEWÓDZKI URZĄD PRACY W KATOWICACH</div>
-      <h1>Formularz rekrutacyjny uczestnika projektu</h1>
-      <p>Wypełnij dane, a następnie wygeneruj gotowy dokument PDF. Dane pozostają wyłącznie na tym urządzeniu.</p>
+  <header class="site-header">
+    <div class="funding-strip">
+      <div class="brand-wrap">
+        <div class="funding-logos" aria-label="Logotypy programu i instytucji finansujących">
+          <img src="assets/fundusze-slaskie.png" alt="Fundusze Europejskie dla Śląskiego">
+          <img src="assets/rzeczpospolita.png" alt="Rzeczpospolita Polska">
+          <img src="assets/unia-europejska.png" alt="Dofinansowane przez Unię Europejską">
+          <img src="assets/wojewodztwo-slaskie.png" alt="Województwo Śląskie">
+        </div>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="institution-row">
+            <div class="wup-brand-box">
+              <img src="assets/logo-wup-oficjalne.png" alt="Wojewódzki Urząd Pracy w Katowicach" class="wup-logo-wide">
+            </div>
+          </div>
+          <h1>Formularz rekrutacyjny uczestnika projektu</h1>
+          <p class="hero-lead">Wypełnij formularz online w kilku prostych krokach. Po zakończeniu zobaczysz podgląd i pobierzesz gotowy dokument PDF zachowujący oficjalny układ formularza.</p>
+          <div class="project-chip"><strong>Projekt:</strong>&nbsp; „Opracowanie modelu prognozowania i monitorowania zmian na rynku pracy”</div>
+        </div>
+        <div class="hero-panel">
+          <div class="privacy-icon" aria-hidden="true">✓</div>
+          <strong>Bezpieczne i wygodne wypełnianie</strong>
+          <p>Formularz działa lokalnie w przeglądarce. Dane nie są wysyłane ani zapisywane na serwerze. Gotowy plik PDF trafia bezpośrednio na Twoje urządzenie.</p>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -109,8 +132,22 @@
     </form>
 
     <aside class="sidebar">
-      <div class="side-card"><h3>Jak to działa?</h3><ol><li>Wypełnij pola.</li><li>Kliknij „Generuj wypełniony PDF”.</li><li>Zapisz i wydrukuj dokument.</li><li>Złóż podpis na ostatniej stronie.</li></ol></div>
-      <div class="side-card privacy"><h3>Prywatność</h3><p>Formularz działa lokalnie w przeglądarce. Dane nie są przesyłane na serwer.</p></div>
+      <div class="side-card project-card">
+        <img src="assets/logo-kompetencje.png" alt="Kompetencje Plus" class="project-logo">
+        <h3>O projekcie</h3>
+        <p>Formularz dotyczy udziału w projekcie wspierającym rozwój kompetencji pracowników Publicznych Służb Zatrudnienia.</p>
+        <div class="project-meta"><span>Nr projektu</span><strong>FESL.05.07-IP.02-056A/23</strong></div>
+      </div>
+      <div class="side-card steps-card">
+        <h3>Jak to działa?</h3>
+        <ol class="steps-list">
+          <li><span>1</span><div><strong>Uzupełnij dane</strong><small>Przejdź przez sześć krótkich sekcji.</small></div></li>
+          <li><span>2</span><div><strong>Sprawdź podgląd</strong><small>Zobacz wszystkie strony dokumentu.</small></div></li>
+          <li><span>3</span><div><strong>Pobierz PDF</strong><small>Zapisz plik na telefonie lub komputerze.</small></div></li>
+          <li><span>4</span><div><strong>Podpisz dokument</strong><small>Ręcznie po wydruku albo elektronicznie.</small></div></li>
+        </ol>
+      </div>
+      <div class="side-card privacy-card"><div class="privacy-dot">✓</div><div><h3>Bez zapisywania danych</h3><p>Po zamknięciu strony wpisane informacje znikają.</p></div></div>
     </aside>
   </main>
 
@@ -121,6 +158,6 @@
   </dialog>
 
   <script src="assets/pdf-lib.min.js"></script>
-  <script src="app-v5.js?v=5"></script>
+  <script src="app-v5.js?v=7"></script>
 </body>
 </html>

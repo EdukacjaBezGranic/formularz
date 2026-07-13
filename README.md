@@ -1,31 +1,10 @@
-# Formularz rekrutacyjny - GitHub Pages
+# Formularz rekrutacyjny – wersja 8.0
 
-Strona działa wyłącznie w przeglądarce użytkownika. Dane nie są wysyłane do serwera ani zapisywane w repozytorium.
+Gotowa paczka do publikacji na GitHub Pages.
 
-## Publikacja
-1. Utwórz publiczne lub prywatne repozytorium obsługujące GitHub Pages.
-2. Wgraj całą zawartość tego folderu do katalogu głównego repozytorium.
-3. Wejdź w **Settings -> Pages**.
-4. Wybierz **Deploy from a branch**, gałąź `main` oraz katalog `/root`.
-5. Otwórz podany adres HTTPS.
+- poprawiony, responsywny pasek logotypów bez przycinania,
+- oficjalne logo WUP,
+- nowoczesny interfejs formularza,
+- lokalne generowanie PDF bez wysyłania danych na serwer.
 
-## Działanie
-- użytkownik wypełnia wygodny formularz HTML;
-- przycisk **Podgląd PDF** generuje lokalny podgląd pięciu stron;
-- przycisk **Pobierz wypełniony PDF** zapisuje dokument na urządzeniu;
-- PDF korzysta z oryginalnego wzoru i nanosi dane w jego polach;
-- PESEL i data urodzenia są rozkładane znak po znaku;
-- dane nie są zapisywane w localStorage, cookies ani bazie danych.
-
-Do testowania lokalnego użyj prostego serwera HTTP, np. `python -m http.server 8000`, a następnie otwórz `http://localhost:8000`.
-
-## Kalibracja 3.0
-
-Ta wersja korzysta z czystego, nieinteraktywnego wzoru PDF. Usunięto dodatkowe puste kwadraty, ustawiono cyfry PESEL i daty urodzenia według rzeczywistych granic komórek oraz poprawiono położenie miejscowości i daty na stronie 5. Dane są przetwarzane wyłącznie lokalnie w przeglądarce.
-
-
-## Ważne przy aktualizacji
-Wersja 5.0 używa nowych nazw `app-v5.js` i `formularz-wzor-v5.pdf`, aby GitHub Pages i telefon nie otwierały starej wersji z pamięci podręcznej. Po wgraniu usuń z repozytorium stare pliki `app.js` i `assets/formularz-wzor.pdf`.
-
-
-Zmiany 5.0: precyzyjne, osobne pozycje zaznaczeń dla pięciu poziomów wykształcenia oraz korekta nagłówka na „w ramach programu…”.
+Po wgraniu plików do repozytorium włącz GitHub Pages dla gałęzi `main` i katalogu `/root`.
