@@ -101,7 +101,8 @@
 
       <div class="actions">
         <button type="button" class="secondary" id="clearBtn">Wyczyść</button>
-        <button type="submit" class="primary" id="generateBtn"><span>Generuj wypełniony PDF</span></button>
+        <button type="button" class="preview" id="previewBtn">Podgląd PDF</button>
+        <button type="submit" class="primary" id="generateBtn"><span>Pobierz wypełniony PDF</span></button>
       </div>
       <div id="message" role="status" aria-live="polite"></div>
     </form>
@@ -111,6 +112,12 @@
       <div class="side-card privacy"><h3>Prywatność</h3><p>Formularz działa lokalnie w przeglądarce. Dane nie są przesyłane na serwer.</p></div>
     </aside>
   </main>
+
+  <dialog id="previewDialog" class="preview-dialog">
+    <div class="preview-head"><strong>Podgląd wypełnionego PDF</strong><button type="button" id="closePreview" aria-label="Zamknij">×</button></div>
+    <iframe id="previewFrame" title="Podgląd PDF"></iframe>
+    <div class="preview-foot"><button type="button" class="primary" id="downloadPreview">Pobierz ten PDF</button></div>
+  </dialog>
 
   <script src="assets/pdf-lib.min.js"></script>
   <script src="app.js"></script>

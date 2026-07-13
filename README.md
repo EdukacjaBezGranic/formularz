@@ -1,30 +1,20 @@
-# Formularz rekrutacyjny - generator oryginalnego PDF
+# Formularz rekrutacyjny - GitHub Pages
 
-Strona działa w całości w przeglądarce. Wpisane dane nie są wysyłane do serwera i nie są zapisywane w bazie. Po kliknięciu **Generuj wypełniony PDF** dane są nanoszone na oryginalny, pięciostronicowy wzór PDF.
+Strona działa wyłącznie w przeglądarce użytkownika. Dane nie są wysyłane do serwera ani zapisywane w repozytorium.
 
-## Publikacja na GitHub Pages
+## Publikacja
+1. Utwórz publiczne lub prywatne repozytorium obsługujące GitHub Pages.
+2. Wgraj całą zawartość tego folderu do katalogu głównego repozytorium.
+3. Wejdź w **Settings -> Pages**.
+4. Wybierz **Deploy from a branch**, gałąź `main` oraz katalog `/root`.
+5. Otwórz podany adres HTTPS.
 
-1. Utwórz nowe publiczne repozytorium na GitHubie.
-2. Wgraj całą zawartość tej paczki do katalogu głównego repozytorium.
-3. Otwórz `Settings` → `Pages`.
-4. W `Build and deployment` wybierz `Deploy from a branch`.
-5. Wybierz gałąź `main` i katalog `/root`, a następnie `Save`.
-6. Po kilku minutach GitHub pokaże adres gotowej strony.
+## Działanie
+- użytkownik wypełnia wygodny formularz HTML;
+- przycisk **Podgląd PDF** generuje lokalny podgląd pięciu stron;
+- przycisk **Pobierz wypełniony PDF** zapisuje dokument na urządzeniu;
+- PDF korzysta z oryginalnego wzoru i nanosi dane w jego polach;
+- PESEL i data urodzenia są rozkładane znak po znaku;
+- dane nie są zapisywane w localStorage, cookies ani bazie danych.
 
-## Prywatność
-
-- brak bazy danych,
-- brak wysyłania formularza,
-- brak localStorage,
-- brak analityki i skryptów śledzących,
-- PDF powstaje lokalnie na urządzeniu użytkownika.
-
-## Test lokalny
-
-Ze względów bezpieczeństwa przeglądarka może blokować wczytanie PDF po otwarciu pliku `index.html` bezpośrednio z dysku. W katalogu projektu uruchom:
-
-```bash
-python -m http.server 8000
-```
-
-Następnie otwórz `http://localhost:8000`.
+Do testowania lokalnego użyj prostego serwera HTTP, np. `python -m http.server 8000`, a następnie otwórz `http://localhost:8000`.

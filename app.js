@@ -3,9 +3,18 @@
   const form = document.getElementById('recruitmentForm');
   const message = document.getElementById('message');
   const generateBtn = document.getElementById('generateBtn');
+  const previewBtn = document.getElementById('previewBtn');
   const clearBtn = document.getElementById('clearBtn');
   const needsDetails = document.getElementById('needsDetails');
+  const previewDialog = document.getElementById('previewDialog');
+  const previewFrame = document.getElementById('previewFrame');
+  const closePreview = document.getElementById('closePreview');
+  const downloadPreview = document.getElementById('downloadPreview');
+  let previewUrl = null;
+  let previewBytes = null;
+  let previewFilename = 'Formularz_rekrutacyjny.pdf';
 
+  // Współrzędne pochodzą bezpośrednio z pól oryginalnego PDF (A4, punkty PDF).
   const fields = {
     imie:[1,291.65095,576.8504,544.29507,591.2417], nazwisko:[1,291.65095,561.2599,544.29507,575.6511],
     obywatelstwo:[1,291.65095,546.2689,544.29507,560.06057], wiek:[1,291.65095,515.6875,544.29507,530.07876],
@@ -43,7 +52,8 @@
 
   const get = name => form.elements[name]?.value?.trim?.() ?? '';
   const selected = name => form.querySelector(`[name="${name}"]:checked`)?.value || '';
-  const formatDate = value => value ? value.split('-').reverse().join('.') : '';
+  const formatDatePL = value => value ? value.split('-').reverse().join('.') : '';
+  const formatDateISO = value => value || '';
 
   document.querySelectorAll('[name="szczegolne_potrzeby"]').forEach(el => el.addEventListener('change', () => {
     const yes = selected('szczegolne_potrzeby') === 'tak';
@@ -69,132 +79,186 @@
     return lines;
   }
 
-  async function drawTextAsImage(pdfDoc, page, rect, text, multiline = false) {
-    if (!text) return;
+  async function embedCanvas(pdfDoc, page, rect, painter) {
     const [, x1, y1, x2, y2] = rect;
-    const width = x2 - x1;
-    const height = y2 - y1;
-    const scale = 4;
+    const width = x2 - x1, height = y2 - y1, scale = 5;
     const canvas = document.createElement('canvas');
-    canvas.width = Math.max(8, Math.round(width * scale));
-    canvas.height = Math.max(8, Math.round(height * scale));
+    canvas.width = Math.max(10, Math.round(width * scale));
+    canvas.height = Math.max(10, Math.round(height * scale));
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#111';
-    ctx.textBaseline = 'top';
-
-    const padX = 4 * scale;
-    const padY = 2 * scale;
-    const availableWidth = canvas.width - 2 * padX;
-    const availableHeight = canvas.height - 2 * padY;
-    let fontPt = multiline ? 8.8 : 9.4;
-    const minPt = 6.2;
-    let lines = [];
-
-    while (fontPt >= minPt) {
-      ctx.font = `${fontPt * scale}px Arial, Helvetica, sans-serif`;
-      lines = multiline ? wrapLines(ctx, text, availableWidth) : [String(text)];
-      const lineHeight = fontPt * scale * 1.12;
-      if (lines.length * lineHeight <= availableHeight && lines.every(line => ctx.measureText(line).width <= availableWidth)) break;
-      fontPt -= 0.25;
-    }
-
-    const lineHeight = fontPt * scale * 1.12;
-    const maxLines = Math.max(1, Math.floor(availableHeight / lineHeight));
-    lines.slice(0, maxLines).forEach((line, i) => ctx.fillText(line, padX, padY + i * lineHeight));
-
+    painter(ctx, canvas, scale);
     const png = await pdfDoc.embedPng(canvas.toDataURL('image/png'));
-    page.drawImage(png, { x: x1, y: y1, width, height });
+    page.drawImage(png, { x:x1, y:y1, width, height });
+  }
+
+  async function drawText(pdfDoc, page, rect, text, options = {}) {
+    if (!text) return;
+    await embedCanvas(pdfDoc, page, rect, (ctx, canvas, scale) => {
+      const multiline = !!options.multiline;
+      const center = !!options.center;
+      const padX = (options.padX ?? 4) * scale;
+      const padY = (options.padY ?? 1) * scale;
+      const availableWidth = canvas.width - 2 * padX;
+      const availableHeight = canvas.height - 2 * padY;
+      let fontPt = options.fontPt ?? (multiline ? 8.2 : 9.2);
+      const minPt = options.minPt ?? 5.8;
+      let lines = [];
+      ctx.fillStyle = '#000';
+      while (fontPt >= minPt) {
+        ctx.font = `${fontPt * scale}px Arial, Helvetica, sans-serif`;
+        lines = multiline ? wrapLines(ctx, text, availableWidth) : [String(text)];
+        const lh = fontPt * scale * (options.lineHeight ?? 1.08);
+        if (lines.length * lh <= availableHeight && lines.every(line => ctx.measureText(line).width <= availableWidth)) break;
+        fontPt -= 0.2;
+      }
+      ctx.font = `${fontPt * scale}px Arial, Helvetica, sans-serif`;
+      ctx.textBaseline = 'middle';
+      const lineHeight = fontPt * scale * (options.lineHeight ?? 1.08);
+      const maxLines = Math.max(1, Math.floor(availableHeight / lineHeight));
+      const shown = lines.slice(0, maxLines);
+      const totalH = shown.length * lineHeight;
+      const startY = multiline ? padY + lineHeight/2 : canvas.height/2 + (options.offsetY ?? 0) * scale;
+      shown.forEach((line, i) => {
+        const w = ctx.measureText(line).width;
+        const x = center ? (canvas.width - w)/2 : padX;
+        const y = multiline ? startY + i*lineHeight : startY;
+        ctx.fillText(line, x, y);
+      });
+    });
+  }
+
+  async function drawCharacters(pdfDoc, page, rect, value, pattern) {
+    if (!value) return;
+    const clean = String(value).replace(/\D/g, '');
+    await embedCanvas(pdfDoc, page, rect, (ctx, canvas, scale) => {
+      ctx.fillStyle = '#000';
+      ctx.font = `${9.2 * scale}px Arial, Helvetica, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const slots = pattern.length;
+      const slotW = canvas.width / slots;
+      let digit = 0;
+      pattern.forEach((token, i) => {
+        if (token === 'd' && digit < clean.length) {
+          ctx.fillText(clean[digit++], (i + 0.5) * slotW, canvas.height/2 + 0.2*scale);
+        }
+      });
+    });
   }
 
   function drawX(page, rect) {
     const [, x1, y1, x2, y2] = rect;
-    const pad = 2.2;
-    page.drawLine({ start: {x:x1+pad,y:y1+pad}, end: {x:x2-pad,y:y2-pad}, thickness: 1.2, color: rgb(0.05,0.05,0.05) });
-    page.drawLine({ start: {x:x1+pad,y:y2-pad}, end: {x:x2-pad,y:y1+pad}, thickness: 1.2, color: rgb(0.05,0.05,0.05) });
+    const cx=(x1+x2)/2, cy=(y1+y2)/2;
+    const size=Math.min(x2-x1,y2-y1)*0.30;
+    page.drawLine({start:{x:cx-size,y:cy-size},end:{x:cx+size,y:cy+size},thickness:1.25,color:rgb(0,0,0)});
+    page.drawLine({start:{x:cx-size,y:cy+size},end:{x:cx+size,y:cy-size},thickness:1.25,color:rgb(0,0,0)});
   }
 
-  function download(bytes, filename) {
-    const blob = new Blob([bytes], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    message.textContent = '';
-    message.className = '';
+  function validate() {
+    message.textContent=''; message.className='';
     if (!form.checkValidity()) {
       form.reportValidity();
-      message.textContent = 'Uzupełnij wszystkie wymagane pola.';
-      message.className = 'error';
-      return;
+      message.textContent='Uzupełnij wszystkie wymagane pola.';
+      message.className='error';
+      return false;
+    }
+    return true;
+  }
+
+  async function buildPdf() {
+    const response = await fetch('assets/formularz-wzor.pdf', {cache:'no-store'});
+    if (!response.ok) throw new Error('Nie udało się wczytać wzoru PDF.');
+    const pdfDoc = await PDFDocument.load(await response.arrayBuffer());
+    // Usuwamy puste pola formularza z wzoru, aby pod wydrukiem została czysta strona.
+    try { pdfDoc.getForm().flatten(); } catch (_) {}
+    const pages = pdfDoc.getPages();
+
+    const values = {
+      imie:get('imie'), nazwisko:get('nazwisko'), obywatelstwo:get('obywatelstwo'), wiek:get('wiek'),
+      wojewodztwo:get('wojewodztwo'), powiat:get('powiat'), gmina:get('gmina'), miejscowosc:get('miejscowosc'),
+      kod_pocztowy:get('kod_pocztowy'), ulica:get('ulica'), nr_domu:get('nr_domu'), nr_lokalu:get('nr_lokalu'),
+      telefon:get('telefon'), email:get('email'), zatrudniony_w:get('zatrudniony_w'), typ_umowy:get('typ_umowy'),
+      data_rozp_zatr:formatDatePL(get('data_rozp_zatr')), data_zakonczenia_zatr:get('data_zakonczenia_zatr') || 'nadal',
+      stanowisko_pracy:get('stanowisko_pracy'), opis_szczegolnych_potrzeb:get('opis_szczegolnych_potrzeb'),
+      obszar_wsparcia_1:get('obszar_wsparcia_1'), obszar_wsparcia_2:get('obszar_wsparcia_2'), obszar_wsparcia_3:get('obszar_wsparcia_3'),
+      imie_nazwisko_oswiadczenie:`${get('imie')} ${get('nazwisko')}`,
+      miejscowosc_data:`${get('miejscowosc_podpisu')}, ${formatDatePL(get('data_podpisu'))}`
+    };
+
+    const multiline = new Set(['typ_umowy','data_rozp_zatr','data_zakonczenia_zatr','stanowisko_pracy','opis_szczegolnych_potrzeb','obszar_wsparcia_1','obszar_wsparcia_2','obszar_wsparcia_3']);
+    for (const [name, value] of Object.entries(values)) {
+      const rect=fields[name];
+      if (rect && value) await drawText(pdfDoc,pages[rect[0]-1],rect,value,{multiline:multiline.has(name),fontPt:name.startsWith('obszar_')?8.0:undefined});
     }
 
-    generateBtn.disabled = true;
-    generateBtn.querySelector('span').textContent = 'Generowanie PDF…';
+    // PESEL i data urodzenia: znak w osobnej kratce, zgodnie ze wzorem.
+    await drawCharacters(pdfDoc,pages[0],fields.pesel,get('pesel'),'ddddddddddd'.split(''));
+    const iso=formatDateISO(get('data_urodzenia')).replace(/-/g,''); // RRRRMMDD
+    await drawCharacters(pdfDoc,pages[0],fields.data_urodzenia,iso,'dddd-dd-dd'.split(''));
+
+    const marks=[
+      `plec_${selected('plec')}`, `wykszt_${selected('wyksztalcenie')}`,
+      ...['niepelnosprawnosc','kraje_trzecie','obce_pochodzenie','mniejszosc','bezdomnosc','szczegolne_potrzeby'].map(n=>`${n}_${selected(n)}`),
+      selected('szczebel'), ...[1,2,3].map(n=>`obszar_${n}_poziom_${get(`obszar_${n}_poziom`)}`)
+    ];
+    marks.forEach(name=>{const rect=checks[name]; if(rect) drawX(pages[rect[0]-1],rect);});
+
+    return await pdfDoc.save({useObjectStreams:false});
+  }
+
+  function filename() {
+    const safe=`${get('nazwisko')}_${get('imie')}`.replace(/[^a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ_-]+/g,'_');
+    return `Formularz_rekrutacyjny_${safe || 'uczestnika'}.pdf`;
+  }
+
+  function download(bytes, name) {
+    const blob=new Blob([bytes],{type:'application/pdf'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }
+
+  async function run(mode) {
+    if (!validate()) return;
+    generateBtn.disabled=true; previewBtn.disabled=true;
+    const old=mode==='preview'?previewBtn.textContent:generateBtn.querySelector('span').textContent;
+    if(mode==='preview') previewBtn.textContent='Tworzenie podglądu…'; else generateBtn.querySelector('span').textContent='Generowanie PDF…';
     try {
-      const templateResponse = await fetch('assets/formularz-wzor.pdf', { cache: 'no-store' });
-      if (!templateResponse.ok) throw new Error('Nie udało się wczytać wzoru PDF.');
-      const templateBytes = await templateResponse.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(templateBytes);
-      const pages = pdfDoc.getPages();
-
-      const values = {
-        imie:get('imie'), nazwisko:get('nazwisko'), obywatelstwo:get('obywatelstwo'), wiek:get('wiek'), pesel:get('pesel'), data_urodzenia:formatDate(get('data_urodzenia')),
-        wojewodztwo:get('wojewodztwo'), powiat:get('powiat'), gmina:get('gmina'), miejscowosc:get('miejscowosc'), kod_pocztowy:get('kod_pocztowy'), ulica:get('ulica'), nr_domu:get('nr_domu'), nr_lokalu:get('nr_lokalu'),
-        telefon:get('telefon'), email:get('email'), zatrudniony_w:get('zatrudniony_w'), typ_umowy:get('typ_umowy'), data_rozp_zatr:formatDate(get('data_rozp_zatr')), data_zakonczenia_zatr:get('data_zakonczenia_zatr') || 'nadal', stanowisko_pracy:get('stanowisko_pracy'),
-        opis_szczegolnych_potrzeb:get('opis_szczegolnych_potrzeb'), obszar_wsparcia_1:get('obszar_wsparcia_1'), obszar_wsparcia_2:get('obszar_wsparcia_2'), obszar_wsparcia_3:get('obszar_wsparcia_3'),
-        imie_nazwisko_oswiadczenie:`${get('imie')} ${get('nazwisko')}`, miejscowosc_data:`${get('miejscowosc_podpisu')}, ${formatDate(get('data_podpisu'))}`
-      };
-
-      const multilineFields = new Set(['typ_umowy','data_rozp_zatr','data_zakonczenia_zatr','stanowisko_pracy','opis_szczegolnych_potrzeb','obszar_wsparcia_1','obszar_wsparcia_2','obszar_wsparcia_3']);
-      for (const [name, value] of Object.entries(values)) {
-        const rect = fields[name];
-        if (rect && value) await drawTextAsImage(pdfDoc, pages[rect[0]-1], rect, value, multilineFields.has(name));
+      const bytes=await buildPdf();
+      if(mode==='preview') {
+        if(previewUrl) URL.revokeObjectURL(previewUrl);
+        previewBytes=bytes; previewFilename=filename();
+        previewUrl=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));
+        previewFrame.src=previewUrl;
+        previewDialog.showModal();
+      } else {
+        download(bytes,filename());
+        message.textContent='Gotowy PDF został pobrany. Przed podpisaniem sprawdź wszystkie 5 stron.';
+        message.className='success';
       }
-
-      const marks = [
-        `plec_${selected('plec')}`,
-        `wykszt_${selected('wyksztalcenie')}`,
-        ...['niepelnosprawnosc','kraje_trzecie','obce_pochodzenie','mniejszosc','bezdomnosc','szczegolne_potrzeby'].map(n => `${n}_${selected(n)}`),
-        selected('szczebel'),
-        ...[1,2,3].map(n => `obszar_${n}_poziom_${get(`obszar_${n}_poziom`)}`)
-      ];
-      for (const name of marks) {
-        const rect = checks[name];
-        if (rect) drawX(pages[rect[0]-1], rect);
-      }
-
-      const output = await pdfDoc.save({ useObjectStreams: false });
-      const safeName = `${get('nazwisko')}_${get('imie')}`.replace(/[^a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ_-]+/g, '_');
-      download(output, `Formularz_rekrutacyjny_${safeName}.pdf`);
-      message.textContent = 'Gotowy PDF został pobrany. Zachowuje oryginalne 5 stron, logotypy, tabele i układ dokumentu.';
-      message.className = 'success';
-    } catch (err) {
+    } catch(err) {
       console.error(err);
-      message.textContent = 'Nie udało się wygenerować PDF. Po publikacji na GitHub Pages strona będzie działać prawidłowo. Lokalnie uruchom ją przez prosty serwer HTTP.';
-      message.className = 'error';
+      message.textContent='Nie udało się wygenerować PDF. Na GitHub Pages strona musi być otwierana przez adres HTTPS, nie bezpośrednio jako plik.';
+      message.className='error';
     } finally {
-      generateBtn.disabled = false;
-      generateBtn.querySelector('span').textContent = 'Generuj wypełniony PDF';
+      generateBtn.disabled=false; previewBtn.disabled=false;
+      if(mode==='preview') previewBtn.textContent=old; else generateBtn.querySelector('span').textContent=old;
+    }
+  }
+
+  form.addEventListener('submit',e=>{e.preventDefault();run('download');});
+  previewBtn.addEventListener('click',()=>run('preview'));
+  closePreview.addEventListener('click',()=>previewDialog.close());
+  downloadPreview.addEventListener('click',()=>{if(previewBytes) download(previewBytes,previewFilename);});
+  previewDialog.addEventListener('close',()=>{previewFrame.src='about:blank'; if(previewUrl){URL.revokeObjectURL(previewUrl);previewUrl=null;}});
+
+  clearBtn.addEventListener('click',()=>{
+    if(confirm('Wyczyścić wszystkie wpisane dane?')) {
+      form.reset(); needsDetails.classList.add('hidden'); message.textContent='';
+      form.elements.obywatelstwo.value='polskie'; form.elements.wojewodztwo.value='śląskie';
+      form.elements.data_podpisu.value=new Date().toISOString().slice(0,10);
     }
   });
-
-  clearBtn.addEventListener('click', () => {
-    if (confirm('Wyczyścić wszystkie wpisane dane?')) {
-      form.reset();
-      needsDetails.classList.add('hidden');
-      message.textContent = '';
-      form.elements.data_podpisu.value = new Date().toISOString().slice(0,10);
-    }
-  });
-
-  form.elements.data_podpisu.value = new Date().toISOString().slice(0,10);
+  form.elements.data_podpisu.value=new Date().toISOString().slice(0,10);
 })();
