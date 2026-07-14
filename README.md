@@ -43,3 +43,9 @@ Wersja 9.1: estetyczne wyjaśnienia wykształcenia i szczebla stanowiska oraz pe
 - przeniesiono wybór poziomu wsparcia pod listę obszaru,
 - na komputerze poziomy zajmują pełną szerokość karty,
 - na telefonie poziomy układają się pionowo, bez nakładania tekstu.
+
+
+## Wersja 9.3.3 - kalibracja PDF
+- poprawiono współrzędne znaczników X dla wszystkich pięciu szczebli stanowiska,
+- oryginalna kropka jest zakrywana przed narysowaniem czystego znaku X,
+- nie dodano żadnych nowych funkcji ani zmian w interfejsie.

@@ -81,9 +81,14 @@
     obce_pochodzenie_nie:[2,470.48216,529.4791,481.88417,540.8722], mniejszosc_tak:[2,351.6614,500.09693,363.0634,511.49003],
     mniejszosc_nie:[2,470.48216,500.09693,481.88417,511.49003], bezdomnosc_tak:[2,351.6614,426.3416,363.0634,437.7347],
     bezdomnosc_nie:[2,470.48216,426.3416,481.88417,437.7347], szczegolne_potrzeby_nie:[2,70.21226,235.65717,80.41404,245.85102],
-    szczegolne_potrzeby_tak:[2,70.21226,220.06665,80.41404,230.26044], kadra_zarzadzajaca:[3,70.81236,736.95339,81.61425,747.7468],
-    wyzszy_szczebel:[3,70.81236,719.5639,81.61425,730.35739], sredni_szczebel:[3,70.81236,689.5821,81.61425,700.37557],
-    nizszy_szczebel:[3,70.81236,660.1999,81.61425,670.99337], prace_proste:[3,70.81236,630.218,81.61425,641.01156],
+    szczegolne_potrzeby_tak:[2,70.21226,220.06665,80.41404,230.26044],
+    // Kalibracja na podstawie rzeczywistych środków kropek w oryginalnym wzorze PDF.
+    // Każdy szczebel ma osobny środek, ponieważ odstępy między wierszami nie są równe.
+    kadra_zarzadzajaca:[3,71.32,731.23,81.32,741.23],
+    wyzszy_szczebel:[3,71.32,716.83,81.32,726.83],
+    sredni_szczebel:[3,71.32,687.31,81.32,697.31],
+    nizszy_szczebel:[3,71.32,658.15,81.32,668.15],
+    prace_proste:[3,71.32,628.99,81.32,638.99],
     obszar_1_poziom_1:[3,396.06916,353.18595,406.87107,363.9794], obszar_1_poziom_2:[3,445.27778,353.18595,456.07966,363.9794], obszar_1_poziom_3:[3,494.48637,353.18595,505.28825,363.9794],
     obszar_2_poziom_1:[3,396.06916,319.00666,406.87107,329.8001], obszar_2_poziom_2:[3,445.27778,319.00666,456.07966,329.8001], obszar_2_poziom_3:[3,494.48637,319.00666,505.28825,329.8001],
     obszar_3_poziom_1:[3,396.06916,284.22773,406.87107,295.02119], obszar_3_poziom_2:[3,445.27778,284.22773,456.07966,295.02119], obszar_3_poziom_3:[3,494.48637,284.22773,505.28825,295.02119]
@@ -348,16 +353,17 @@
     page.drawLine({start:{x:cx-size,y:cy+size},end:{x:cx+size,y:cy-size},thickness:2.0,color:rgb(0,0,0)});
   }
 
-  // Mniejszy znak dla punktów listy na stronie 3. Współrzędne są
-  // skorygowane optycznie tak, aby X trafiał dokładnie w środek kropki,
-  // zamiast zasłaniać tekst lub wychodzić poza znacznik.
+  // Znak dla kropek listy szczebli na stronie 3.
+  // Najpierw zakrywamy oryginalną kropkę, a następnie rysujemy czysty,
+  // wyśrodkowany znak X. Dzięki temu znacznik nie tworzy czarnej plamy.
   function drawPositionLevelX(page, rect) {
     const [, x1, y1, x2, y2] = rect;
-    const cx = (x1 + x2) / 2 - 0.35;
-    const cy = (y1 + y2) / 2 - 0.15;
-    const size = 2.65;
-    page.drawLine({start:{x:cx-size,y:cy-size},end:{x:cx+size,y:cy+size},thickness:1.55,color:rgb(0,0,0)});
-    page.drawLine({start:{x:cx-size,y:cy+size},end:{x:cx+size,y:cy-size},thickness:1.55,color:rgb(0,0,0)});
+    const cx = (x1 + x2) / 2;
+    const cy = (y1 + y2) / 2;
+    page.drawCircle({x:cx,y:cy,size:2.6,color:rgb(1,1,1)});
+    const size = 2.25;
+    page.drawLine({start:{x:cx-size,y:cy-size},end:{x:cx+size,y:cy+size},thickness:1.25,color:rgb(0,0,0)});
+    page.drawLine({start:{x:cx-size,y:cy+size},end:{x:cx+size,y:cy-size},thickness:1.25,color:rgb(0,0,0)});
   }
 
   async function redrawCharacterRow(pdfDoc, page, rect, text, slots, fontSize = 10.6) {
