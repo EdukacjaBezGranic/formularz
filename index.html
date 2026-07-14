@@ -110,10 +110,11 @@
           <label><input type="radio" name="szczebel" value="nizszy_szczebel"> Pracownicy niższego szczebla</label>
           <label><input type="radio" name="szczebel" value="prace_proste"> Pracownicy wykonujący prace proste</label>
         </div></fieldset>
+        <p class="support-hint" id="supportHint">Najpierw wybierz szczebel stanowiska. Następnie wskaż trzy obszary wsparcia przypisane do wybranego szczebla.</p>
         <div class="support-grid">
-          <div class="support-row"><label>Obszar wsparcia 1 *<input name="obszar_wsparcia_1" required></label><label>Poziom *<select name="obszar_1_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
-          <div class="support-row"><label>Obszar wsparcia 2 *<input name="obszar_wsparcia_2" required></label><label>Poziom *<select name="obszar_2_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
-          <div class="support-row"><label>Obszar wsparcia 3 *<input name="obszar_wsparcia_3" required></label><label>Poziom *<select name="obszar_3_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
+          <div class="support-row"><label>Obszar wsparcia 1 *<select name="obszar_wsparcia_1" class="support-area-select" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label><label>Poziom *<select name="obszar_1_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
+          <div class="support-row"><label>Obszar wsparcia 2 *<select name="obszar_wsparcia_2" class="support-area-select" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label><label>Poziom *<select name="obszar_2_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
+          <div class="support-row"><label>Obszar wsparcia 3 *<select name="obszar_wsparcia_3" class="support-area-select" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label><label>Poziom *<select name="obszar_3_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
         </div>
       </section>
 
@@ -183,6 +184,6 @@
   </dialog>
 
   <script src="assets/pdf-lib.min.js"></script>
-  <script src="app-v8-2.js?v=8.4"></script>
+  <script src="app-v8-5.js?v=8.4"></script>
 </body>
 </html>

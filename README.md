@@ -8,3 +8,7 @@ Wersja z dopracowaną responsywnością na telefonach.
 - poprawione logotypy, nagłówek, karty i okna dialogowe,
 - obsługa safe-area na iPhone,
 - generator PDF działa lokalnie i nie wysyła danych.
+
+
+## Wersja 8.5
+Obszary wsparcia są automatycznie filtrowane według wybranego szczebla stanowiska. Nie można wybrać tego samego obszaru więcej niż raz.

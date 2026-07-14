@@ -422,3 +422,28 @@ fieldset{border:0;padding:0;margin:22px 0 0}legend{font-weight:850;margin-bottom
   .funding-logos img:nth-child(4){height:46px}
   .hero h1{font-size:29px}
 }
+
+/* v8.5 — obszary wsparcia przypisane do szczebla stanowiska */
+.support-hint {
+  margin: 14px 0 16px;
+  padding: 13px 15px;
+  border-left: 4px solid #0b68b5;
+  border-radius: 10px;
+  background: #eef7ff;
+  color: #27445f;
+  line-height: 1.5;
+}
+.support-area-select {
+  width: 100%;
+  min-height: 48px;
+  white-space: normal;
+}
+.support-area-select:disabled {
+  background: #f1f4f7;
+  color: #687789;
+  cursor: not-allowed;
+}
+@media (max-width: 720px) {
+  .support-area-select { min-height: 54px; font-size: 16px; }
+  .support-hint { margin-top: 12px; font-size: 14px; }
+}
