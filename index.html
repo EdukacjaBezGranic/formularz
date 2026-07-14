@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Formularz rekrutacyjny - generator PDF</title>
-  <link rel="stylesheet" href="style.css?v=8.6">
+  <link rel="stylesheet" href="style.css?v=9.3">
 </head>
 <body>
   <header class="site-header">
@@ -57,8 +57,16 @@
           <label><input type="radio" name="wyksztalcenie" value="gimnazjalne"> Gimnazjalne (ISCED 2)</label>
           <label><input type="radio" name="wyksztalcenie" value="ponadgimnazjalne"> Ponadgimnazjalne (ISCED 3)</label>
           <label><input type="radio" name="wyksztalcenie" value="policealne"> Policealne (ISCED 4)</label>
-          <label><input type="radio" name="wyksztalcenie" value="wyzsze"> Wyższe (ISCED 5-8)</label>
-        </div></fieldset>
+          <label><input type="radio" name="wyksztalcenie" value="wyzsze"> Wyższe (ISCED 5–8)</label>
+        </div>
+        <details class="field-explanation education-explanation">
+          <summary><span class="help-icon" aria-hidden="true">i</span><span>Wyjaśnienia poziomów wykształcenia</span></summary>
+          <div class="field-explanation-content explanation-cards">
+            <article class="explanation-card"><strong>Ponadgimnazjalne</strong><p>Ukończona zasadnicza szkoła zawodowa, liceum, technikum lub technikum uzupełniające.</p></article>
+            <article class="explanation-card"><strong>Policealne</strong><p>Ukończona szkoła policealna.</p></article>
+            <article class="explanation-card"><strong>Wyższe</strong><p>Ukończone studia krótkiego cyklu, licencjackie, magisterskie lub doktoranckie.</p></article>
+          </div>
+        </details></fieldset>
       </section>
 
       <section class="card">
@@ -109,13 +117,138 @@
           <label><input type="radio" name="szczebel" value="sredni_szczebel"> Pracownicy średniego szczebla</label>
           <label><input type="radio" name="szczebel" value="nizszy_szczebel"> Pracownicy niższego szczebla</label>
           <label><input type="radio" name="szczebel" value="prace_proste"> Pracownicy wykonujący prace proste</label>
-        </div></fieldset>
+        </div>
+        <details class="field-explanation position-explanation">
+          <summary><span class="help-icon" aria-hidden="true">i</span><span>Przykładowe stanowiska dla poszczególnych szczebli</span></summary>
+          <div class="field-explanation-content explanation-cards position-cards">
+            <article class="explanation-card"><strong>Kadra zarządzająca</strong><p>np. Dyrektor, Naczelnik Wydziału, Kierownik.</p></article>
+            <article class="explanation-card"><strong>Pracownicy wyższego szczebla</strong><p>np. Specjalista ds. administracji, Specjalista ds. statystyki, Doradca zawodowy.</p></article>
+            <article class="explanation-card"><strong>Pracownicy średniego szczebla</strong><p>np. Asystent biurowy, Pracownik działu usług rynku pracy, Technik ekonomista, Asystent EURES.</p></article>
+            <article class="explanation-card"><strong>Pracownicy niższego szczebla</strong><p>np. Kierowca, Pracownik techniczny, Robotnik gospodarczy.</p></article>
+            <article class="explanation-card"><strong>Pracownicy wykonujący prace proste</strong><p>np. Portier, Konserwator, Sprzątaczka.</p></article>
+          </div>
+        </details></fieldset>
         <p class="support-hint" id="supportHint">Najpierw wybierz szczebel stanowiska. Następnie wskaż trzy obszary wsparcia przypisane do wybranego szczebla.</p>
         <div class="support-grid">
-          <div class="support-row"><label>Obszar wsparcia 1 *<select name="obszar_wsparcia_1" class="support-area-select" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label><label>Poziom *<select name="obszar_1_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
-          <div class="support-row"><label>Obszar wsparcia 2 *<select name="obszar_wsparcia_2" class="support-area-select" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label><label>Poziom *<select name="obszar_2_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
-          <div class="support-row"><label>Obszar wsparcia 3 *<select name="obszar_wsparcia_3" class="support-area-select" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label><label>Poziom *<select name="obszar_3_poziom" required><option value="">Wybierz</option><option>1</option><option>2</option><option>3</option></select></label></div>
+          <div class="support-row" data-support-row="1">
+            <label>Obszar wsparcia 1 *<select name="obszar_wsparcia_1" class="support-area-select" data-support-index="1" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label>
+            <fieldset class="support-level-fieldset"><legend>Preferowany poziom wsparcia *</legend>
+              <div class="support-level-segmented" role="radiogroup" aria-label="Preferowany poziom wsparcia dla obszaru 1">
+                <label><input type="radio" name="obszar_1_poziom" value="1" required><span>Podstawowy</span></label>
+                <label><input type="radio" name="obszar_1_poziom" value="2"><span>Średniozaawansowany</span></label>
+                <label><input type="radio" name="obszar_1_poziom" value="3"><span>Zaawansowany</span></label>
+              </div>
+            </fieldset>
+            <div class="language-details hidden" id="languageDetails1" aria-live="polite">
+              <div class="language-details-head"><strong>Uzupełnij dane dotyczące języka obcego</strong><span>Pola wymagane dla wybranego obszaru językowego</span></div>
+              <div class="language-grid">
+                <label>Język *
+                  <select name="jezyk_1" class="language-select">
+                    <option value="">Wybierz język</option>
+                    <option value="angielski">Angielski</option>
+                    <option value="niemiecki">Niemiecki</option>
+                    <option value="francuski">Francuski</option>
+                    <option value="hiszpański">Hiszpański</option>
+                    <option value="włoski">Włoski</option>
+                    <option value="ukraiński">Ukraiński</option>
+                    <option value="inny">Inny</option>
+                  </select>
+                </label>
+                <label>Poziom językowy *
+                  <select name="jezyk_1_poziom" class="language-level-select">
+                    <option value="">Wybierz poziom</option>
+                    <option value="A1/A2">A1/A2</option>
+                    <option value="B1/B2">B1/B2</option>
+                    <option value="C1">C1</option>
+                  </select>
+                </label>
+                <label class="language-other hidden" id="languageOther1">Wpisz język *<input name="jezyk_1_inny" autocomplete="off"></label>
+              </div>
+            </div>
+          </div>
+          <div class="support-row" data-support-row="2">
+            <label>Obszar wsparcia 2 *<select name="obszar_wsparcia_2" class="support-area-select" data-support-index="2" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label>
+            <fieldset class="support-level-fieldset"><legend>Preferowany poziom wsparcia *</legend>
+              <div class="support-level-segmented" role="radiogroup" aria-label="Preferowany poziom wsparcia dla obszaru 2">
+                <label><input type="radio" name="obszar_2_poziom" value="1" required><span>Podstawowy</span></label>
+                <label><input type="radio" name="obszar_2_poziom" value="2"><span>Średniozaawansowany</span></label>
+                <label><input type="radio" name="obszar_2_poziom" value="3"><span>Zaawansowany</span></label>
+              </div>
+            </fieldset>
+            <div class="language-details hidden" id="languageDetails2" aria-live="polite">
+              <div class="language-details-head"><strong>Uzupełnij dane dotyczące języka obcego</strong><span>Pola wymagane dla wybranego obszaru językowego</span></div>
+              <div class="language-grid">
+                <label>Język *
+                  <select name="jezyk_2" class="language-select">
+                    <option value="">Wybierz język</option>
+                    <option value="angielski">Angielski</option>
+                    <option value="niemiecki">Niemiecki</option>
+                    <option value="francuski">Francuski</option>
+                    <option value="hiszpański">Hiszpański</option>
+                    <option value="włoski">Włoski</option>
+                    <option value="ukraiński">Ukraiński</option>
+                    <option value="inny">Inny</option>
+                  </select>
+                </label>
+                <label>Poziom językowy *
+                  <select name="jezyk_2_poziom" class="language-level-select">
+                    <option value="">Wybierz poziom</option>
+                    <option value="A1/A2">A1/A2</option>
+                    <option value="B1/B2">B1/B2</option>
+                    <option value="C1">C1</option>
+                  </select>
+                </label>
+                <label class="language-other hidden" id="languageOther2">Wpisz język *<input name="jezyk_2_inny" autocomplete="off"></label>
+              </div>
+            </div>
+          </div>
+          <div class="support-row" data-support-row="3">
+            <label>Obszar wsparcia 3 *<select name="obszar_wsparcia_3" class="support-area-select" data-support-index="3" required disabled><option value="">Najpierw wybierz szczebel stanowiska</option></select></label>
+            <fieldset class="support-level-fieldset"><legend>Preferowany poziom wsparcia *</legend>
+              <div class="support-level-segmented" role="radiogroup" aria-label="Preferowany poziom wsparcia dla obszaru 3">
+                <label><input type="radio" name="obszar_3_poziom" value="1" required><span>Podstawowy</span></label>
+                <label><input type="radio" name="obszar_3_poziom" value="2"><span>Średniozaawansowany</span></label>
+                <label><input type="radio" name="obszar_3_poziom" value="3"><span>Zaawansowany</span></label>
+              </div>
+            </fieldset>
+            <div class="language-details hidden" id="languageDetails3" aria-live="polite">
+              <div class="language-details-head"><strong>Uzupełnij dane dotyczące języka obcego</strong><span>Pola wymagane dla wybranego obszaru językowego</span></div>
+              <div class="language-grid">
+                <label>Język *
+                  <select name="jezyk_3" class="language-select">
+                    <option value="">Wybierz język</option>
+                    <option value="angielski">Angielski</option>
+                    <option value="niemiecki">Niemiecki</option>
+                    <option value="francuski">Francuski</option>
+                    <option value="hiszpański">Hiszpański</option>
+                    <option value="włoski">Włoski</option>
+                    <option value="ukraiński">Ukraiński</option>
+                    <option value="inny">Inny</option>
+                  </select>
+                </label>
+                <label>Poziom językowy *
+                  <select name="jezyk_3_poziom" class="language-level-select">
+                    <option value="">Wybierz poziom</option>
+                    <option value="A1/A2">A1/A2</option>
+                    <option value="B1/B2">B1/B2</option>
+                    <option value="C1">C1</option>
+                  </select>
+                </label>
+                <label class="language-other hidden" id="languageOther3">Wpisz język *<input name="jezyk_3_inny" autocomplete="off"></label>
+              </div>
+            </div>
+          </div>
         </div>
+        <details class="field-explanation support-level-explanation">
+          <summary><span class="help-icon" aria-hidden="true">i</span><span>Jak rozumieć poziomy wsparcia?</span></summary>
+          <div class="field-explanation-content level-cards">
+            <article class="level-card level-basic"><span class="level-number">1</span><div><strong>Poziom podstawowy</strong><p>Wprowadzenie do zagadnień i rozwój podstawowych kompetencji.</p></div></article>
+            <article class="level-card level-intermediate"><span class="level-number">2</span><div><strong>Poziom średniozaawansowany</strong><p>Rozwój i utrwalenie posiadanej wiedzy oraz umiejętności.</p></div></article>
+            <article class="level-card level-advanced"><span class="level-number">3</span><div><strong>Poziom zaawansowany</strong><p>Rozwój i utrwalenie posiadanej wiedzy oraz umiejętności.</p></div></article>
+            <p class="level-note">Wskazany poziom ma charakter orientacyjny i będzie uwzględniany przy doborze form wsparcia.</p>
+            <p class="level-note language-note"><strong>Język obcy:</strong> w przypadku wskazania obszaru wsparcia kompetencyjnego/szkoleniowego z zakresu języka obcego należy wskazać konkretny język oraz określić jego poziom A1/A2, B1/B2 lub C1.</p>
+          </div>
+        </details>
       </section>
 
       <section class="card declaration-section">
@@ -179,7 +312,7 @@
       <div class="side-card project-card">
         <h3>O projekcie</h3>
         <p>Formularz dotyczy udziału w projekcie wspierającym rozwój kompetencji pracowników Publicznych Służb Zatrudnienia.</p>
-        <div class="project-meta"><span>Nr projektu</span><strong>FESL.05.07-IP.02-056A/23</strong></div>
+        <div class="project-meta"><span>Nr wniosku</span><strong>FESL.05.07-IP.02-056A/23</strong></div>
       </div>
       <div class="side-card steps-card">
         <h3>Jak to działa?</h3>
@@ -234,6 +367,6 @@
   </dialog>
 
   <script src="assets/pdf-lib.min.js"></script>
-  <script src="app-v8-6.js?v=8.6"></script>
+  <script src="app-v9-3.js?v=9.3.1"></script>
 </body>
 </html>
