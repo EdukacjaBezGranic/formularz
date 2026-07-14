@@ -320,3 +320,105 @@ fieldset{border:0;padding:0;margin:22px 0 0}legend{font-weight:850;margin-bottom
   .hero h1{font-size:30px}
   .project-chip{margin-top:12px}
 }
+
+/* Wersja 8.4 – dedykowany układ mobilny */
+@media (max-width: 768px){
+  .funding-strip{position:relative;z-index:5;background:#fff;border-bottom:1px solid #e2e8f0}
+  .brand-wrap{max-width:520px;padding:14px 16px 16px}
+  .funding-logos{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    align-items:center;
+    gap:14px 18px;
+    width:100%;
+    max-width:none;
+    height:auto;
+  }
+  .funding-logos img{
+    display:block;
+    width:100%;
+    height:58px;
+    max-width:100%;
+    object-fit:contain;
+    object-position:center;
+    overflow:visible;
+  }
+  .funding-logos img:nth-child(1),
+  .funding-logos img:nth-child(2){height:54px}
+  .funding-logos img:nth-child(3),
+  .funding-logos img:nth-child(4){height:58px}
+
+  .hero{padding:22px 18px 28px;background:linear-gradient(145deg,#063d76 0%,#075ca8 55%,#0589ba 100%)}
+  .hero:before,.hero:after{display:none}
+  .hero-inner{display:block;max-width:560px}
+  .hero-copy .institution-row{margin:0 0 22px}
+  .wup-brand-box{display:flex;width:100%;max-width:none;padding:13px 16px;border-radius:18px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+  .wup-logo-wide{width:100%;height:76px;max-width:none;object-position:center}
+  .hero h1{font-size:clamp(31px,8.2vw,42px);line-height:1.08;letter-spacing:-.03em;margin:0 0 16px}
+  .hero-lead{font-size:17px;line-height:1.55;max-width:none}
+  .project-chip{display:block;width:100%;margin-top:20px;padding:13px 15px;text-align:center;border-radius:15px;font-size:14px;line-height:1.45}
+  .hero-panel{display:grid;grid-template-columns:44px minmax(0,1fr);gap:0 14px;margin-top:22px;padding:19px 18px;border-radius:19px}
+  .hero-panel strong{font-size:18px;line-height:1.25;margin:1px 0 7px}
+  .hero-panel p{grid-column:2;font-size:14px;line-height:1.5}
+  .privacy-icon{width:44px;height:44px;border-radius:14px;font-size:24px;grid-row:1/3}
+
+  .layout{padding:18px 14px 40px;margin:0 auto;max-width:620px}
+  .card{padding:22px 18px 24px;margin-bottom:16px;border-radius:20px}
+  .section-title{margin-bottom:22px}
+  .section-title h2{font-size:22px}
+  input,select,textarea{min-height:54px;font-size:16px;padding:14px 13px}
+  .choice-row label,.choices label,.confirm{min-height:52px;padding:13px}
+
+  /* Na telefonie przyciski nie zasłaniają formularza. */
+  .actions{
+    position:static;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin:18px 0 0;
+    padding:14px;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 12px 30px rgba(12,42,80,.10);
+  }
+  .actions button{width:100%;min-height:54px;font-size:15px}
+  .actions .primary,.actions .secondary,.actions .preview{order:initial;grid-column:auto;grid-row:auto}
+  .actions .primary{order:1}
+  .actions .preview{order:2}
+  .actions .secondary{order:3}
+
+  .sidebar{margin-top:22px}
+  .side-card{padding:20px}
+}
+
+@media (max-width: 430px){
+  .brand-wrap{padding:12px 12px 14px}
+  .funding-logos{gap:11px 12px}
+  .funding-logos img{height:50px}
+  .funding-logos img:nth-child(1),
+  .funding-logos img:nth-child(2){height:48px}
+  .funding-logos img:nth-child(3),
+  .funding-logos img:nth-child(4){height:52px}
+  .hero{padding:18px 12px 25px}
+  .wup-brand-box{padding:11px 12px;border-radius:16px}
+  .wup-logo-wide{height:70px}
+  .hero h1{font-size:32px;line-height:1.1}
+  .hero-lead{font-size:16px;line-height:1.52}
+  .project-chip{font-size:13px;padding:12px}
+  .hero-panel{padding:17px 15px;grid-template-columns:40px minmax(0,1fr);column-gap:12px}
+  .privacy-icon{width:40px;height:40px;font-size:22px}
+  .hero-panel strong{font-size:17px}
+  .layout{padding-left:10px;padding-right:10px}
+  .card{padding:20px 15px 22px}
+  .actions{padding:11px}
+}
+
+@media (max-width: 360px){
+  .funding-logos{grid-template-columns:1fr;gap:8px}
+  .funding-logos img,
+  .funding-logos img:nth-child(1),
+  .funding-logos img:nth-child(2),
+  .funding-logos img:nth-child(3),
+  .funding-logos img:nth-child(4){height:46px}
+  .hero h1{font-size:29px}
+}
