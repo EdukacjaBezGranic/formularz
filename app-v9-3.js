@@ -348,6 +348,18 @@
     page.drawLine({start:{x:cx-size,y:cy+size},end:{x:cx+size,y:cy-size},thickness:2.0,color:rgb(0,0,0)});
   }
 
+  // Mniejszy znak dla punktów listy na stronie 3. Współrzędne są
+  // skorygowane optycznie tak, aby X trafiał dokładnie w środek kropki,
+  // zamiast zasłaniać tekst lub wychodzić poza znacznik.
+  function drawPositionLevelX(page, rect) {
+    const [, x1, y1, x2, y2] = rect;
+    const cx = (x1 + x2) / 2 - 0.35;
+    const cy = (y1 + y2) / 2 - 0.15;
+    const size = 2.65;
+    page.drawLine({start:{x:cx-size,y:cy-size},end:{x:cx+size,y:cy+size},thickness:1.55,color:rgb(0,0,0)});
+    page.drawLine({start:{x:cx-size,y:cy+size},end:{x:cx+size,y:cy-size},thickness:1.55,color:rgb(0,0,0)});
+  }
+
   async function redrawCharacterRow(pdfDoc, page, rect, text, slots, fontSize = 10.6) {
     const [, x1, y1, x2, y2] = rect;
     const width = x2 - x1;
@@ -445,7 +457,14 @@
       ...['niepelnosprawnosc','kraje_trzecie','obce_pochodzenie','mniejszosc','bezdomnosc','szczegolne_potrzeby'].map(n=>`${n}_${selected(n)}`),
       selected('szczebel'), ...[1,2,3].map(n=>`obszar_${n}_poziom_${get(`obszar_${n}_poziom`)}`)
     ];
-    marks.forEach(name=>{const rect=checks[name]; if(rect) drawX(pages[rect[0]-1],rect);});
+    const positionLevelMarks = new Set(['kadra_zarzadzajaca','wyzszy_szczebel','sredni_szczebel','nizszy_szczebel','prace_proste']);
+    marks.forEach(name=>{
+      const rect=checks[name];
+      if(!rect) return;
+      const page=pages[rect[0]-1];
+      if(positionLevelMarks.has(name)) drawPositionLevelX(page,rect);
+      else drawX(page,rect);
+    });
 
     return await pdfDoc.save({useObjectStreams:false});
   }
