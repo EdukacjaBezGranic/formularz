@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Formularz rekrutacyjny - generator PDF</title>
-  <link rel="stylesheet" href="style.css?v=8.4">
+  <link rel="stylesheet" href="style.css?v=8.6">
 </head>
 <body>
   <header class="site-header">
@@ -118,10 +118,53 @@
         </div>
       </section>
 
-      <section class="card">
-        <div class="section-title"><span>6</span><div><h2>Dane do podpisu</h2><p>Dokument należy podpisać własnoręcznie po wydrukowaniu albo podpisać elektronicznie.</p></div></div>
+      <section class="card declaration-section">
+        <div class="section-title"><span>6</span><div><h2>Dane do podpisu i oświadczenia</h2><p>Przeczytaj pełną treść oświadczeń przed ich zaakceptowaniem.</p></div></div>
         <div class="grid two"><label>Miejscowość *<input name="miejscowosc_podpisu" required></label><label>Data podpisu *<input name="data_podpisu" type="date" required></label></div>
-        <label class="confirm"><input type="checkbox" name="potwierdzenie" required> Potwierdzam, że podane dane są zgodne ze stanem faktycznym i zapoznałem/am się z oświadczeniami w formularzu.</label>
+
+        <details class="declarations" id="declarationsDetails">
+          <summary>
+            <span class="declaration-summary-icon" aria-hidden="true">§</span>
+            <span><strong>Oświadczenia i klauzula informacyjna</strong><small>Pełna treść — 14 punktów</small></span>
+            <span class="declaration-chevron" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="declarations-content">
+            <h3>OŚWIADCZENIA</h3>
+            <p>Ja niżej podpisana/y <strong class="auto-name" id="declarationName">—</strong>, świadomy/a odpowiedzialności za składanie oświadczeń niezgodnych z prawdą:</p>
+            <ol>
+              <li>Oświadczam, iż wszystkie podane w formularzu dane odpowiadają stanowi faktycznemu i są prawdziwe.</li>
+              <li>Oświadczam, że jestem zatrudniony/a na terenie województwa śląskiego.</li>
+              <li>Oświadczam, że reprezentuję instytucję, która należy do instytucji Publicznych Służb Zatrudnienia.</li>
+              <li>Wyrażam zgodę na przetwarzanie danych osobowych.</li>
+            </ol>
+
+            <h3>OŚWIADCZENIE OSOBY APLIKUJĄCEJ O UDZIAŁ W PROJEKCIE</h3>
+            <p><strong>„Opracowanie modelu prognozowania i monitorowania zmian na rynku pracy” nr FESL.05.07-IP.02-056A/23</strong></p>
+            <p>W związku z chęcią przystąpienia do projektu pn. „Opracowanie modelu prognozowania i monitorowania zmian na rynku pracy” wyrażam zgodę na przetwarzanie moich danych osobowych oraz oświadczam, że przyjmuję do wiadomości, iż:</p>
+            <ol>
+              <li>Przesłanką umożliwiającą legalne przetwarzanie moich danych osobowych jest art. 6 ust. 1 lit. a) Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych oraz uchylenia dyrektywy 95/46/WE.</li>
+              <li>W związku z realizacją procesu rekrutacji do niniejszego projektu przetwarzane będą następujące kategorie danych osobowych Uczestnika projektu: dane uczestnika, dane kontaktowe uczestnika, szczegóły i rodzaj wsparcia, status uczestnika projektu w chwili przystąpienia do projektu.</li>
+              <li>Moje dane będą przetwarzane od dnia podpisania niniejszego oświadczenia do: 1) pięciu lat począwszy od dnia zakończenia okresu realizacji projektu, przy czym IP-WUP może przedłużyć ten termin na dalszy czas oznaczony, informując o tym Beneficjenta odrębnym pismem; 2) dziesięciu lat począwszy od dnia, w którym przyznano pomoc — w przypadku projektów objętych pomocą publiczną.</li>
+              <li>Administratorem danych osobowych jest Wojewódzki Urząd Pracy z siedzibą w Katowicach (40-086), przy ul. Sokolskiej 29, wupkatowice.praca.gov.pl.</li>
+              <li>Moje dane osobowe będą wykorzystywane jedynie w celu rekrutacji oraz uczestnictwa w niniejszym projekcie.</li>
+              <li>Dane osobowe będą przetwarzane przez następujących odbiorców: instytucję zarządzającą, instytucję organizującą nabór oraz instytucje kontrolne upoważnione do przetwarzania danych osobowych na podstawie odrębnych przepisów prawa, operatora pocztowego lub kuriera (w przypadku korespondencji papierowej), podmioty zapewniające obsługę teleinformatyczną projektu.</li>
+              <li>Podmiotami, którym zostanie powierzone przetwarzanie danych osobowych, będą firmy zewnętrzne realizujące szkolenia/kursy.</li>
+              <li>O powierzeniu danych osobowych do przetwarzania innym podmiotom Uczestnik zostanie poinformowany w drodze pisemnej.</li>
+              <li>Mam prawo dostępu do moich danych osobowych, ich sprostowania, usunięcia lub ograniczenia przetwarzania.</li>
+              <li>Mam prawo do cofnięcia zgody na przetwarzanie danych osobowych w dowolnym momencie bez wpływu na zgodność z prawem przetwarzania, którego dokonano na podstawie zgody przed jej cofnięciem.</li>
+              <li>Mam prawo do wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych w przypadku podejrzenia naruszenia przepisów o ochronie danych osobowych.</li>
+              <li>Wymienione prawa będą traktowane w sposób określony w artykułach 13 do 19 Rozdziału III „Prawa osoby, której dane dotyczą” rozporządzenia Parlamentu Europejskiego i Rady (UE) 2016/679.</li>
+              <li>Podanie moich danych osobowych, o których mowa w pkt 2, jest niezbędne do realizacji procesu rekrutacji. Odmowa ich przekazania jest jednoznaczna z brakiem możliwości rozpoczęcia udziału w procesie rekrutacji do projektu.</li>
+              <li>Udostępnione dane osobowe nie będą podlegały zautomatyzowanemu podejmowaniu decyzji, w tym decyzji będących wynikiem profilowania.</li>
+            </ol>
+            <div class="declaration-end">Koniec treści oświadczeń</div>
+          </div>
+        </details>
+
+        <label class="confirm declaration-confirm is-locked" id="declarationConfirm">
+          <input type="checkbox" name="potwierdzenie" required disabled>
+          <span><strong>Akceptuję oświadczenia i potwierdzam poprawność danych.</strong><small>Najpierw rozwiń i zapoznaj się z pełną treścią powyżej.</small></span>
+        </label>
       </section>
 
       <div class="actions">
@@ -146,6 +189,13 @@
           <li><span>3</span><div><strong>Pobierz PDF</strong><small>Zapisz plik na telefonie lub komputerze.</small></div></li>
           <li><span>4</span><div><strong>Podpisz dokument</strong><small>Ręcznie po wydruku albo elektronicznie.</small></div></li>
         </ol>
+      </div>
+      <div class="side-card qr-card">
+        <h3>Wypełnij na telefonie</h3>
+        <img src="assets/kod-qr-formularz.png" alt="Kod QR prowadzący do formularza" class="qr-image">
+        <p>Zeskanuj kod aparatem telefonu, aby otworzyć formularz na urządzeniu mobilnym.</p>
+        <button type="button" class="qr-copy" id="copyLinkBtn">Kopiuj link do formularza</button>
+        <span class="qr-copy-status" id="copyLinkStatus" aria-live="polite"></span>
       </div>
       <div class="side-card privacy-card"><div class="privacy-dot">✓</div><div><h3>Bez zapisywania danych</h3><p>Po zamknięciu strony wpisane informacje znikają.</p></div></div>
     </aside>
@@ -184,6 +234,6 @@
   </dialog>
 
   <script src="assets/pdf-lib.min.js"></script>
-  <script src="app-v8-5.js?v=8.4"></script>
+  <script src="app-v8-6.js?v=8.6"></script>
 </body>
 </html>
